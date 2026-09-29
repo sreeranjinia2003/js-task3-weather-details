@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+   
+</head>
+
+<body style="background-color: beige;">
+    
+        <div class="d-flex align-items-center  justify-content-center m-5" >
+            <input id="input" type="text" placeholder="Enter city name" class="w-50 mt-5" style="height: 50px;">
+            <button class="btn btn-success text-light ms-3 mt-5 " onclick="show()" style="height: 50px">GET WEATHER</button>
+
+        </div>
+        <div id="output" >
+            
+               
+
+        </div>
+
+    
+
+</body>
+<script>
+    const show=async ()=>{
+        let place=document.getElementById('input').value
+        let display=document.getElementById('output')
+
+        if(place){
+            //api call
+            const res=await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=5b4bee0ba241d092159faf007e166080&units=metric`)
+            const result=await res.json()
+            console.log(result);
+
+            if(result.length==0){
+        display.innerHTML='<h5 class="text-danger">Enter a valid place name</h5>'
+      }
+      else{
+          let placeDetails=result
+        console.log(placeDetails);
+
+        display.innerHTML=`<div id="output" class=" p-5 " style="height: 400px;width: 600px;margin-left: 420px;background-color:black;">
+            
+                <h5 class="text-warning">
+                    City Name:<span class="text-primary" >${ placeDetails.name}</span>
+                </h5>
+                <h5 class="text-warning mb-3">Weather Icon:<span class="text-primary" >${ placeDetails.weather[0].icon}</span></h5>
+                <h5 class="text-warning mb-3">Temperature:<i class="fa-solid fa-temperature-quarter text-danger"></i><span class="text-primary">${ placeDetails.main.temp}°C</span> </h5>
+                <h5 class="text-warning mb-3">Weather Description:<i class="fa-solid fa-cloud text-light"></i><span class="text-primary">${ placeDetails.weather[0].description}</span></h5>
+                <h5 class="text-warning mb-3">Feesls Like:<i class="fa-solid fa-temperature-quarter text-danger"></i><span class="text-primary">${ placeDetails.main.feels_like} </span></h5>
+                <h5 class="text-warning mb-3">Humidity:<i class="fa-solid fa-droplet text-primary"></i> <span class="text-primary">${ placeDetails.main.humidity}%</span></h5>
+                <h5 class="text-warning mb-3">Wind Speed:<i class="fa-solid fa-wind text-light"></i><span class="text-primary">${ placeDetails.wind.speed}m/s </span></h5>
+                <h5 class="text-warning mb-3">Visibility:<i class="fa-solid fa-eye text-light"></i><span class="text-primary">${ placeDetails.visibility} km</span></h5>
+            
+
+        </div>`      }
+            
+        }
+    }
+</script>
+</html>
